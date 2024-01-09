@@ -1,0 +1,1 @@
+alter table posts add description varchar(255);

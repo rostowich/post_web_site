@@ -1,0 +1,2 @@
+INSERT INTO users(email, password, firstname, lastname, creation_date, role)
+VALUES ('admin@example.com', '$2a$10$ymoMRphNihMub2ajJuEZtugaPd2UtCTd6.cfp5G5C4JJTsK3kletm', 'Administrator', 'Platform', NOW() , 'ADMIN');

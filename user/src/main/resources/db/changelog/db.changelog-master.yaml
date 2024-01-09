@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Rostow
+  - include:
+      file: changes/001_create_schema.sql
+      relativeToChangelogFile: true
+  - include:
+      file: changes/002_add_role_in_user_table.sql
+      relativeToChangelogFile: true
+  - include:
+      file: changes/003_add_admin_user.sql
+      relativeToChangelogFile: true
+

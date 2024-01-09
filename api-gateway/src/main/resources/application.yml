@@ -1,0 +1,49 @@
+server:
+  port: 8888
+  servlet:
+    context-path: /api
+eureka:
+  client:
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_ADDRESS:http://localhost:8761/eureka}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+      - id: userModule
+        uri: lb://user-service
+        predicates:
+          - Path=/api/users/**
+        filters:
+          - BffRewritePath=/api/users/,/api/users/
+      - id: postModule
+        uri: lb://post-service
+        predicates:
+          - Path=/api/posts/**
+        filters:
+          - BffRewritePath=/api/posts/,/api/posts/
+      - id: authModule
+        uri: lb://user-service
+        predicates:
+          - Path=/api/auth/**
+        filters:
+          - BffRewritePath=/api/auth/,/api/auth/
+  level:
+    root: debug
+    com:
+      org:
+        example: debug
+    com.zaxxer.hikari.HikariConfig: DEBUG
+    com.zaxxer.hikari: TRACE
