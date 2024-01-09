@@ -1,0 +1,36 @@
+pipeline{
+    agent any
+    triggers{
+		pollSCM('* * * * *')
+	}
+    stages{
+        stage("Compilation"){
+            steps	{
+            sh 'chmod --recursive a+rwx ./'
+            sh "./mvnw compile"
+            }
+        }
+        stage("Test"){
+            steps	{
+            sh "./mvnw test"
+            }
+        }
+         stage("Code coverage. Limiting the minimum score for lines coverage to 75%")	{
+            steps	{
+            sh "./mvnw test jacoco:report"
+            publishHTML	(target:	[
+				reportDir:	'target/site/jacoco',
+				reportFiles:	'index.html',
+				reportName:	"Code coverage report"
+			])
+            sh "./mvnw clean verify"
+
+            }
+        }
+	stage("Package the application"){
+            steps	{
+            sh "./mvnw clean package -DskipTests"
+            }
+        }
+    }
+}
